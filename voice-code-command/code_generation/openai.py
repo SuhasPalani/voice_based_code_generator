@@ -1,8 +1,9 @@
 import requests
 import os
 
+
 def generate_code_from_text(prompt):
-    """Use OpenAI API to generate Python code based on the transcribed text."""
+    """Use OpenAI API to generate code based on the transcribed text."""
     try:
         if not os.getenv("OPENAI_API_KEY"):
             return "Error: Missing OpenAI API key."
@@ -12,12 +13,22 @@ def generate_code_from_text(prompt):
             "Content-Type": "application/json",
         }
 
-        refined_prompt = f"Write a Python function based on the following description:\n\n{prompt}\n\nEnsure the code is complete and formatted properly."
+        # Identify language based on prompt content (simple keyword check)
+        if "javascript" in prompt.lower():
+            language = "JavaScript"
+        elif "python" in prompt.lower():
+            language = "Python"
+        elif "java" in prompt.lower():
+            language = "Java"
+        else:
+            language = "Python"  # Default to Python if no language is detected
+
+        refined_prompt = f"Write a {language} function based on the following description:\n\n{prompt}\n\nEnsure the code is complete and formatted properly."
 
         data = {
-            "model": "gpt-3.5-turbo",  # Changed from gpt-4 to gpt-3.5-turbo
+            "model": "gpt-3.5-turbo",
             "messages": [
-                {"role": "system", "content": "You are a helpful assistant that generates Python code."},
+                {"role": "system", "content": f"You are a helpful assistant that generates {language} code."},
                 {"role": "user", "content": refined_prompt},
             ],
             "max_tokens": 200,

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Mic, Square, X } from "lucide-react"; // Added the X icon for the clear button
+import { Mic, Square, X, Copy } from "lucide-react"; // Added Copy icon
 import {
   Card,
   CardContent,
@@ -16,6 +16,7 @@ export default function Recorder() {
   const [confidence, setConfidence] = useState(null);
   const [mediaRecorder, setMediaRecorder] = useState(null);
   const [stream, setStream] = useState(null);
+  const [copyFeedback, setCopyFeedback] = useState(""); // Feedback state for copy action
 
   const startRecording = async () => {
     try {
@@ -104,6 +105,16 @@ export default function Recorder() {
     setGeneratedCode("");
     setConfidence(null);
     setError("");
+    setCopyFeedback(""); // Reset copy feedback when clearing the screen
+  };
+
+  const copyCodeToClipboard = () => {
+    if (generatedCode) {
+      navigator.clipboard.writeText(generatedCode).then(() => {
+        setCopyFeedback("Code copied to clipboard!"); // Feedback after copying
+        setTimeout(() => setCopyFeedback(""), 2000); // Reset feedback after 2 seconds
+      });
+    }
   };
 
   return (
@@ -171,11 +182,25 @@ export default function Recorder() {
         {generatedCode && (
           <div className="bg-gray-900 p-6 rounded-lg max-h-96 overflow-y-auto">
             <h3 className="text-lg font-semibold mb-3 text-white">
-              Generated Python Code
+              Generated Code
             </h3>
             <pre className="text-green-400 font-mono text-sm">
               {generatedCode}
             </pre>
+
+            <div className="mt-4 flex justify-between items-center">
+              <button
+                onClick={copyCodeToClipboard}
+                className="flex items-center gap-2 px-4 py-2 bg-green-500 hover:bg-green-600 rounded-lg text-white font-medium"
+              >
+                <Copy className="w-5 h-5" />
+                <span>Copy Code</span>
+              </button>
+
+              {copyFeedback && (
+                <span className="text-green-500 text-sm">{copyFeedback}</span>
+              )}
+            </div>
           </div>
         )}
 
