@@ -175,3 +175,8 @@ cython_debug/
 vc/
 *.txt
 temp_audio.wav
+voice-code-command/Main.class
+voice-code-command/MyClass.class
+voice-code-command/temp_code.java
+voice-code-command/temp_code.js
+voice-code-command/temp_code.py

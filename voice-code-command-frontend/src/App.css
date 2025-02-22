@@ -17,7 +17,7 @@
   --danger: #ef4444;
   --warning: #f59e0b;
   --info: #3b82f6;
-  
+
   /* Neutral Colors */
   --background: #f8fafc;
   --foreground: #0f172a;
@@ -25,27 +25,28 @@
   --card-foreground: #1e293b;
   --muted: #64748b;
   --muted-foreground: #94a3b8;
-  
+
   /* Border Colors */
   --border: #e2e8f0;
   --input: #cbd5e1;
-  
+
   /* Shadow */
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
-  
+
   /* Typography */
-  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  
+
   /* Spacing */
   --spacing-xs: 0.25rem;
   --spacing-sm: 0.5rem;
   --spacing-md: 1rem;
   --spacing-lg: 1.5rem;
   --spacing-xl: 2rem;
-  
+
   /* Border Radius */
   --radius-sm: 0.125rem;
   --radius-md: 0.25rem;
@@ -282,42 +283,68 @@ button:disabled {
 }
 
 /* Utility Classes */
-.flex { display: flex; }
-.items-center { align-items: center; }
-.justify-center { justify-content: center; }
-.gap-2 { gap: var(--spacing-sm); }
-.w-full { width: 100%; }
-.mt-3 { margin-top: var(--spacing-md); }
-.mb-3 { margin-bottom: var(--spacing-md); }
-.ml-3 { margin-left: var(--spacing-md); }
-.text-sm { font-size: 0.875rem; }
-.font-semibold { font-weight: 600; }
-.rounded { border-radius: var(--radius-md); }
-.rounded-lg { border-radius: var(--radius-lg); }
-.rounded-full { border-radius: var(--radius-full); }
+.flex {
+  display: flex;
+}
+.items-center {
+  align-items: center;
+}
+.justify-center {
+  justify-content: center;
+}
+.gap-2 {
+  gap: var(--spacing-sm);
+}
+.w-full {
+  width: 100%;
+}
+.mt-3 {
+  margin-top: var(--spacing-md);
+}
+.mb-3 {
+  margin-bottom: var(--spacing-md);
+}
+.ml-3 {
+  margin-left: var(--spacing-md);
+}
+.text-sm {
+  font-size: 0.875rem;
+}
+.font-semibold {
+  font-weight: 600;
+}
+.rounded {
+  border-radius: var(--radius-md);
+}
+.rounded-lg {
+  border-radius: var(--radius-lg);
+}
+.rounded-full {
+  border-radius: var(--radius-full);
+}
 
 /* Responsive Design */
 @media (max-width: 768px) {
   body {
     padding: var(--spacing-md);
   }
-  
+
   .card {
     border-radius: var(--radius-lg);
   }
-  
+
   .card-header {
     padding: var(--spacing-md);
   }
-  
+
   .card-content {
     padding: var(--spacing-md);
   }
-  
+
   .card-title {
     font-size: 1.25rem;
   }
-  
+
   button {
     padding: var(--spacing-xs) var(--spacing-sm);
   }
@@ -329,19 +356,19 @@ button:disabled {
     box-shadow: none;
     border: none;
   }
-  
+
   .card-header {
     padding: var(--spacing-sm);
   }
-  
+
   .card-content {
     padding: var(--spacing-sm);
   }
-  
+
   .card-title {
     font-size: 1.125rem;
   }
-  
+
   pre {
     padding: var(--spacing-md);
     font-size: 0.75rem;
@@ -360,19 +387,183 @@ button:disabled {
     --muted: #64748b;
     --muted-foreground: #94a3b8;
   }
-  
+
   pre {
     background-color: #0f172a;
     border-color: #1e293b;
   }
-  
+
   .alert-error {
     background-color: #450a0a;
     color: #fecaca;
   }
-  
+
   .alert-success {
     background-color: #052e16;
     color: #bbf7d0;
+  }
+}
+
+/* Main card styling */
+.interpreter-card {
+  width: 1000px; /* Increased from 900px */
+  margin: 2rem auto;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.interpreter-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #2d3748;
+}
+
+.interpreter-content {
+  padding: 2rem; /* Increased padding for better spacing */
+}
+
+/* Language selector styling */
+.language-selector {
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.language-selector label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #4a5568;
+}
+
+.language-selector select {
+  min-width: 150px; /* Added minimum width */
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+  background-color: #f7fafc;
+  font-size: 0.875rem;
+  color: #2d3748;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.language-selector select:hover {
+  border-color: #cbd5e0;
+}
+
+.language-selector select:focus {
+  outline: none;
+  border-color: #4299e1;
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.2);
+}
+
+/* Code input area styling */
+.code-input {
+  width: 100%;
+  min-height: 400px; /* Increased height */
+  padding: 1.5rem; /* Increased padding */
+  margin-bottom: 1rem;
+  background-color: #1a1a1a;
+  color: #ffffff;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', monospace;
+  font-size: 1rem; /* Slightly larger font */
+  line-height: 1.5;
+  border-radius: 8px;
+  border: 1px solid #2d3748;
+  resize: vertical;
+  transition: all 0.2s ease;
+}
+
+.code-input:focus {
+  outline: none;
+  border-color: #4299e1;
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.2);
+}
+
+.code-input::placeholder {
+  color: #718096;
+}
+
+/* Run button styling */
+.run-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background-color: #4299e1;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.run-button:hover {
+  background-color: #3182ce;
+  transform: translateY(-1px);
+}
+
+.run-button:active {
+  transform: translateY(0);
+}
+
+.run-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* Output container styling */
+.output-container {
+  margin-top: 1.5rem;
+  padding: 1.5rem; /* Increased padding */
+  background-color: #f7fafc;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+
+.output-title {
+  margin: 0 0 0.75rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #2d3748;
+}
+
+.output-content {
+  margin: 0;
+  padding: 1.5rem; /* Increased padding */
+  background-color: #ffffff;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', monospace;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-all;
+  color: #2d3748;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) { /* Increased breakpoint */
+  .interpreter-card {
+    width: 98%;
+    margin: 1rem auto;
+  }
+  
+  .interpreter-content {
+    padding: 1rem;
+  }
+  
+  .language-selector {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .run-button {
+    width: 100%;
+    justify-content: center;
   }
 }

@@ -8,6 +8,7 @@ from code_generation.openai import generate_code_from_text
 import mimetypes
 import base64
 import os
+import subprocess
 
 app = Flask(__name__)
 CORS(app)
@@ -101,6 +102,43 @@ def transcribe():
         print(f"Error in transcribe endpoint: {e}")
         return jsonify({"error": str(e), "status": "error"}), 500
 
+@app.route("/run_code", methods=["POST"])
+def run_code():
+    try:
+        code = request.json.get("code")
+        language = request.json.get("language")
+        if not code or not language:
+            return jsonify({"error": "No code or language provided"}), 400
 
+        # Create a temporary file to store the code
+        file_extension = {"python": "py", "java": "java", "javascript": "js"}[language]
+        filename = f"temp_code.{file_extension}"
+        with open(filename, "w") as f:
+            f.write(code)
+
+        # Run the code based on the selected language
+        if language == "python":
+            result = subprocess.run(["python", filename], capture_output=True, text=True, timeout=5)
+        elif language == "java":
+            # Compile Java code
+            compile_result = subprocess.run(["javac", filename], capture_output=True, text=True)
+            if compile_result.returncode != 0:
+                return jsonify({"output": f"Compilation Error:\n{compile_result.stderr}"})
+            # Run Java code
+            result = subprocess.run(["java", "-cp", ".", "Main"], capture_output=True, text=True, timeout=5)
+        elif language == "javascript":
+            result = subprocess.run(["node", filename], capture_output=True, text=True, timeout=5)
+
+        # Combine stdout and stderr
+        output = result.stdout + result.stderr
+
+        return jsonify({"output": output})
+
+    except subprocess.TimeoutExpired:
+        return jsonify({"error": "Code execution timed out"}), 408
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+    
 if __name__ == "__main__":
     app.run(debug=True)
