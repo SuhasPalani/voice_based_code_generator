@@ -36,3 +36,100 @@
     transform: rotate(360deg);
   }
 }
+
+
+/* Styles for the recorder container */
+.p-4 {
+  padding: 1rem;
+  font-family: 'Arial', sans-serif;
+}
+
+/* Button styles */
+button {
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Start Recording Button */
+.bg-blue-500 {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.bg-blue-500:hover {
+  background-color: #2563eb;
+  transform: scale(1.05);
+}
+
+/* Stop Recording Button */
+.bg-red-500 {
+  background-color: #ef4444;
+  color: white;
+}
+
+.bg-red-500:hover {
+  background-color: #dc2626;
+  transform: scale(1.05);
+}
+
+/* Disabled Button */
+button:disabled {
+  background-color: #d1d5db;
+  cursor: not-allowed;
+}
+
+/* Error message styling */
+.text-red-500 {
+  color: #ef4444;
+  font-size: 14px;
+  margin-top: 10px;
+  font-weight: 500;
+}
+
+/* Transcription text container */
+.mt-4 {
+  margin-top: 1rem;
+}
+
+.font-bold {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+p {
+  font-size: 16px;
+  line-height: 1.5;
+  color: #333;
+}
+
+/* Confidence text */
+.text-gray-600 {
+  color: #4b5563;
+  font-size: 14px;
+}
+
+/* Add a card-like effect to transcription section */
+.mt-4 {
+  background-color: #f9fafb;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  button {
+      width: 100%;
+      padding: 12px;
+      font-size: 18px;
+  }
+
+  .mt-4 {
+      margin-top: 1rem;
+  }
+}
