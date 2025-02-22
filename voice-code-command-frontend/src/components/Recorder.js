@@ -2,6 +2,7 @@ import { useState } from "react";
 
 export default function Recorder() {
     const [transcription, setTranscription] = useState("");
+    const [generatedCode, setGeneratedCode] = useState("");
     const [isRecording, setIsRecording] = useState(false);
     const [error, setError] = useState("");
     const [confidence, setConfidence] = useState(null);
@@ -13,6 +14,7 @@ export default function Recorder() {
             setIsRecording(true);
             setError("");
             setTranscription("");
+            setGeneratedCode("");
             setConfidence(null);
 
             const userStream = await navigator.mediaDevices.getUserMedia({
@@ -57,8 +59,10 @@ export default function Recorder() {
                     if (data.status === "error") {
                         setError(data.error || "Error in transcription");
                         setTranscription("");
+                        setGeneratedCode("");
                     } else {
                         setTranscription(data.transcription);
+                        setGeneratedCode(data.generated_code); // Display generated code
                         setConfidence(data.confidence);
                         setError("");
                     }
@@ -66,6 +70,7 @@ export default function Recorder() {
                     console.error("Transcription error:", error);
                     setError(error.message || "Error in transcription");
                     setTranscription("");
+                    setGeneratedCode("");
                 } finally {
                     setIsRecording(false);
                     userStream.getTracks().forEach((track) => track.stop());
@@ -102,9 +107,7 @@ export default function Recorder() {
                 {isRecording ? "Stop Recording" : "Start Recording"}
             </button>
 
-            {error && (
-                <p className="text-red-500 mt-2">Error: {error}</p>
-            )}
+            {error && <p className="text-red-500 mt-2">Error: {error}</p>}
 
             {transcription && (
                 <div className="mt-4">
@@ -115,6 +118,13 @@ export default function Recorder() {
                             Confidence: {(confidence * 100).toFixed(1)}%
                         </p>
                     )}
+                </div>
+            )}
+
+            {generatedCode && (
+                <div className="mt-4">
+                    <h3 className="font-bold">Generated Python Code:</h3>
+                    <pre className="bg-gray-100 p-4 rounded">{generatedCode}</pre>
                 </div>
             )}
         </div>

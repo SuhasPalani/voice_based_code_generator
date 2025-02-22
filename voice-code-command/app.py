@@ -9,11 +9,13 @@ import wave
 from pydub import AudioSegment
 import ffmpeg
 
+# Load environment variables
 app = Flask(__name__)
 CORS(app)
 load_dotenv()
 
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 def get_wav_properties(audio_file):
     """Extract WAV file properties."""
@@ -73,9 +75,63 @@ def transcribe_audio(audio_content, encoding_type="LINEAR16", sample_rate=16000)
         print(f"Error in transcribe_audio: {e}")
         return {"error": "Failed to transcribe audio", "details": str(e)}
 
+def generate_code_from_text(prompt):
+    """Use OpenAI API to generate Python code based on the transcribed text."""
+    try:
+        if not OPENAI_API_KEY:
+            return "Error: Missing OpenAI API key."
+
+        headers = {
+            "Authorization": f"Bearer {OPENAI_API_KEY}",
+            "Content-Type": "application/json",
+        }
+
+        # More structured prompt
+        refined_prompt = f"Write a Python function based on the following description:\n\n{prompt}\n\nEnsure the code is complete and formatted properly."
+
+        data = {
+            "model": "gpt-3.5-turbo",  # Changed from gpt-4 to gpt-3.5-turbo
+            "messages": [
+                {"role": "system", "content": "You are a helpful assistant that generates Python code."},
+                {"role": "user", "content": refined_prompt}
+            ],
+            "max_tokens": 200,
+            "temperature": 0.5,
+        }
+
+        print("Sending request to OpenAI:", data)
+
+        response = requests.post(
+            "https://api.openai.com/v1/chat/completions",  # Changed endpoint
+            headers=headers,
+            json=data
+        )
+
+        response_data = response.json()
+        print("OpenAI Response:", response_data)  # Debugging output
+
+        if response.status_code != 200:
+            return f"Error: OpenAI API request failed. Details: {response_data}"
+
+        if "choices" in response_data and len(response_data["choices"]) > 0:
+            return response_data["choices"][0]["message"]["content"].strip()
+
+        return "Error: OpenAI did not return code."
+
+    except Exception as e:
+        print(f"Error generating code: {e}")
+        return f"Error: {e}"
+
+
+    except Exception as e:
+        print(f"Error generating code: {e}")
+        return f"Error: {e}"
+
+
+
 @app.route("/transcribe", methods=["POST"])
 def transcribe():
-    """Handle audio file upload and process transcription."""
+    """Handle audio file upload and process transcription, then generate code from transcription."""
     try:
         if not request.files:
             return jsonify({"error": "No files in request"}), 400
@@ -128,7 +184,10 @@ def transcribe():
             transcript = transcription_result["results"][0]["alternatives"][0]["transcript"]
             confidence = transcription_result["results"][0]["alternatives"][0].get("confidence", 0)
 
-            return jsonify({"transcription": transcript, "confidence": confidence, "status": "success"})
+            # Now, generate code based on the transcript using AI
+            generated_code = generate_code_from_text(transcript)
+
+            return jsonify({"transcription": transcript, "confidence": confidence, "generated_code": generated_code, "status": "success"})
 
         return jsonify({"error": "No transcription found"}), 400
 
