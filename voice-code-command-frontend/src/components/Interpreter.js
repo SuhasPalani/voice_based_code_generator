@@ -27,7 +27,7 @@ export function Interpreter() {
   return (
     <Card className="interpreter-card">
       <CardHeader>
-        <CardTitle className="interpreter-title">Code Interpreter</CardTitle>
+        <CardTitle className="interpreter-title">Code Compiler</CardTitle>
       </CardHeader>
       <CardContent className="interpreter-content">
         <div className="language-selector">
