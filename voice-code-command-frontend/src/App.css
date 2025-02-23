@@ -567,3 +567,112 @@ button:disabled {
     justify-content: center;
   }
 }
+
+
+.explain-button {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.explain-button:hover {
+  background-color: #45a049;
+}
+
+.explanation-container {
+  margin-top: 20px;
+}
+
+.output-title {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.output-content {
+  background-color: #f4f4f4;
+  padding: 10px;
+  border-radius: 5px;
+  white-space: pre-wrap;
+}
+
+
+/* Loading Animation */
+.loading-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background-color: #f4f4f4;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.loading-text {
+  font-size: 16px;
+  color: #333;
+  margin-right: 10px;
+}
+
+.spinner {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Fade-in Animation */
+.fade-in {
+  animation: fadeIn 1s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Additional Styles for Buttons and Output */
+.run-button, .explain-button {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.run-button:hover, .explain-button:hover {
+  background-color: #45a049;
+}
+
+.output-container {
+  margin-top: 20px;
+}
+
+.output-title {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.output-content {
+  background-color: #f4f4f4;
+  padding: 10px;
+  border-radius: 5px;
+  white-space: pre-wrap;
+  font-family: 'Courier New', monospace;
+}

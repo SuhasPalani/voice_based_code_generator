@@ -4,7 +4,7 @@ from audio_processing.conversion import convert_mp3_to_wav, convert_webm_to_wav
 from audio_processing.resampling import resample_audio
 from audio_processing.transcription import transcribe_audio
 from audio_processing.utils import get_audio_duration, get_sample_rate
-from code_generation.openai import generate_code_from_text
+from code_generation.openai import generate_code_from_text, generate_code_explanation
 import mimetypes
 import base64
 import os
@@ -139,6 +139,24 @@ def run_code():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
     
+
+@app.route("/explain_code", methods=["POST"])
+def explain_code():
+    try:
+        code = request.json.get("code")
+        if not code:
+            return jsonify({"error": "No code provided"}), 400
+
+        explanation = generate_code_explanation(code)
+
+        return jsonify({
+            "explanation": explanation,
+            "status": "success",
+        })
+    except Exception as e:
+        print(f"Error in explain_code endpoint: {e}")
+        return jsonify({"error": str(e), "status": "error"}), 500
+
     
 if __name__ == "__main__":
     app.run(debug=True)

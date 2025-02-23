@@ -48,3 +48,41 @@ def generate_code_from_text(prompt):
     except Exception as e:
         print(f"Error generating code: {e}")
         return f"Error: {e}"
+
+
+def generate_code_explanation(code):
+    """Use OpenAI API to generate an explanation for the given code."""
+    try:
+        if not os.getenv("OPENAI_API_KEY"):
+            return "Error: Missing OpenAI API key."
+
+        headers = {
+            "Authorization": f"Bearer {os.getenv('OPENAI_API_KEY')}",
+            "Content-Type": "application/json",
+        }
+
+        refined_prompt = f"Explain the following code:\n\n{code}\n\nProvide a detailed explanation."
+
+        data = {
+            "model": "gpt-3.5-turbo",
+            "messages": [
+                {"role": "system", "content": "You are a helpful assistant that explains code."},
+                {"role": "user", "content": refined_prompt},
+            ],
+            "max_tokens": 300,
+            "temperature": 0.5,
+        }
+
+        response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=data)
+        response_data = response.json()
+
+        if response.status_code != 200:
+            return f"Error: OpenAI API request failed. Details: {response_data}"
+
+        if "choices" in response_data and len(response_data["choices"]) > 0:
+            return response_data["choices"][0]["message"]["content"].strip()
+
+        return "Error: OpenAI did not return an explanation."
+    except Exception as e:
+        print(f"Error generating explanation: {e}")
+        return f"Error: {e}"
