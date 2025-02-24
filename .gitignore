@@ -180,3 +180,5 @@ voice-code-command/MyClass.class
 voice-code-command/temp_code.java
 voice-code-command/temp_code.js
 voice-code-command/temp_code.py
+*.class
+*.java

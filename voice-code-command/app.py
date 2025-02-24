@@ -32,6 +32,7 @@ def transcribe():
         wav_path = "temp_audio.wav"
         resampled_wav_path = "resampled_audio.wav"  # Path to the resampled WAV file
 
+        # Remove old files if they exist
         if os.path.exists(wav_path):
             os.remove(wav_path)
 
@@ -110,24 +111,35 @@ def run_code():
         if not code or not language:
             return jsonify({"error": "No code or language provided"}), 400
 
-        # Create a temporary file to store the code
+        # Determine file extension and filename based on the language
         file_extension = {"python": "py", "java": "java", "javascript": "js"}[language]
-        filename = f"temp_code.{file_extension}"
+        
+        # For Java, save it as Main.java
+        if language == "java":
+            filename = "Main.java"  # Always use Main.java for Java code
+        else:
+            filename = f"temp_code.{file_extension}"
+
         with open(filename, "w") as f:
             f.write(code)
 
+        # Ensure no old class files are present (for Java)
+        if language == "java":
+            if os.path.exists("Main.class"):
+                os.remove("Main.class")
+
         # Run the code based on the selected language
         if language == "python":
-            result = subprocess.run(["python", filename], capture_output=True, text=True, timeout=5)
+            result = subprocess.run(["python", filename], capture_output=True, text=True, timeout=30)
         elif language == "java":
             # Compile Java code
             compile_result = subprocess.run(["javac", filename], capture_output=True, text=True)
             if compile_result.returncode != 0:
-                return jsonify({"output": f"Compilation Error:\n{compile_result.stderr}"})
+                return jsonify({"output": f"Compilation Error:\n{compile_result.stderr}"}), 400
             # Run Java code
-            result = subprocess.run(["java", "-cp", ".", "Main"], capture_output=True, text=True, timeout=5)
+            result = subprocess.run(["java", "-cp", ".", "Main"], capture_output=True, text=True, timeout=30)
         elif language == "javascript":
-            result = subprocess.run(["node", filename], capture_output=True, text=True, timeout=5)
+            result = subprocess.run(["node", filename], capture_output=True, text=True, timeout=30)
 
         # Combine stdout and stderr
         output = result.stdout + result.stderr
@@ -138,7 +150,7 @@ def run_code():
         return jsonify({"error": "Code execution timed out"}), 408
     except Exception as e:
         return jsonify({"error": str(e)}), 500
-    
+
 
 @app.route("/explain_code", methods=["POST"])
 def explain_code():
